@@ -17,19 +17,19 @@ def min_max_transform(data):
     feature are 0 and 1, respectively.
 
     Input:
-    data: an input data array with a size of [n_sample, n_feature]
+    data: an input data array with a size of [n_sample, n_feature]      the whole table
     Return:
-    norm_data: the data array after transformation
+    norm_data: the data array after transformation      (normalisation?)
     '''
 
-    norm_data = np.empty(data.shape)
+    norm_data = np.empty(data.shape)        # Create an empy numpy array (for later copy into) the same size as the table
     norm_data.fill(np.nan)
-    for i in range(data.shape[1]):
-        v = data[:, i].copy()
+    for i in range(data.shape[1]):          # Iterate through all the features of the table i.e the 2nd dimension
+        v = data[:, i].copy()       # We be only care about the 2nd dimension here which contain each unique feature
         if np.max(v) == np.min(v):
             norm_data[:, i] = 0
         else:
-            v = (v - np.min(v)) / (np.max(v) - np.min(v))
+            v = (v - np.min(v)) / (np.max(v) - np.min(v))   # ... / the normalised range [minimum, maximum]
             norm_data[:, i] = v
     return norm_data
 
@@ -37,16 +37,17 @@ def min_max_transform(data):
 
 def generate_feature_distance_ranking(data, method='Pearson'):
     '''
-    This function generates ranking of distances/dissimilarities between features for tabular data.
+    This function generates ranking of distances/dissimilarities between features (matrix) for tabular data.
 
     Input:
     data: input data, n_sample by n_feature
-    method: 'Pearson' uses Pearson correlation coefficient to evaluate similarity between features;
-        'Spearman' uses Spearman correlation coefficient to evaluate similarity between features;
+    method:     SELECT FROM 1 OF THESE 3 METHODS
+        'Pearson' uses Pearson correlation coefficient to evaluate SIMILARITY between features;
+        'Spearman' uses Spearman correlation coefficient to evaluate similarity (uhmm DISSIMILARITY?) between features;
         'set' uses Jaccard index to evaluate similarity between features that are binary variables.
 
     Return:
-    ranking: symmetric ranking matrix based on dissimilarity
+    ranking: symmetric ranking matrix based on dissimilarity (or similarity)
     corr: matrix of distances between features
     '''
 
@@ -545,7 +546,7 @@ def table_to_image(norm_d, scale, fea_dist_method, image_dist_method, save_image
     norm_d: a 2D array or data frame, which is the tabular data. Its size is n_samples by n_features
     scale: a list of two positive integers. The number of pixel rows and columns in the image representations,
         into which the tabular data will be converted.
-    fea_dist_method: a string indicating the method used for calculating the pairwise distances between features, 
+    fea_dist_method: a string indicating the method used for calculating the PAIRWISE DISTANCE BETWEEN FEATURES,
         for which there are three options.
         'Pearson' uses the Pearson correlation coefficient to evaluate the similarity between features.
         'Spearman' uses the Spearman correlation coefficient to evaluate the similarity between features.
@@ -557,12 +558,12 @@ def table_to_image(norm_d, scale, fea_dist_method, image_dist_method, save_image
     val_step: the number of iterations for determining algorithm convergence. If the error reduction rate is smaller than 
         min_gain for val_step iterations, the algorithm converges.
     normDir: a string indicating the directory to save result files.
-    error: a string indicating the function to evaluate the difference between feature distance ranking and pixel
-        distance ranking. 'abs' indicates the absolute function. 'squared' indicates the square function.
+    error: a string indicating the function to evaluate the DIFFERENCE between FEATURE DISTANCE RANKING AND
+    PIXEL DISTANCE RANKING. 'abs' indicates the absolute function. 'squared' indicates the square function.
     switch_t: in each iteration, if the smallest error change rate resulted from all possible feature swapping
         is not larger than switch_t, the feature swapping that results in the smallest error change rate will
-        be performed. Error change rate is the difference between the errors after and before feature swapping
-        divided by the error before feature swapping. If switch_t <= 0, the IGTD algorithm monotonically reduces
+        be performed. Error change rate is the DIFFERENCE between the ERRORS AFTER AND BEFORE FEATURE SWAPPING
+        divided by the error BEFORE feature swapping. If switch_t <= 0, the IGTD algorithm monotonically reduces
         the error during optimization.
     min_gain: if the error reduction rate is not larger than min_gain for val_step iterations, the algorithm converges.
     
