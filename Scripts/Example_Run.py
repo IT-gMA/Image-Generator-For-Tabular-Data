@@ -4,8 +4,8 @@ from IGTD_Functions import min_max_transform, table_to_image
 
 
 
-num_row = 30    # Number of pixel rows in image representation
-num_col = 30    # Number of pixel columns in image representation
+num_row = 3    # Number of pixel rows in image representation
+num_col = 4    # Number of pixel columns in image representation
 # num_row x num_col ~= num_features?, feature pixels are tightly packed
 
 num = num_row * num_col # Number of features to be included for analysis, which is also the total number of pixels in image representation
