@@ -29,10 +29,8 @@ if opt.data:
 saved_result_dir = '../Results/'
 if opt.result:
     saved_result_dir = '../{}/'.format(opt.result)
-    print(f"save in {saved_result_dir}")
     # Create this new directory if it does not exist yet
     if not os.path.exists(tab_data_path):
-        print("It doesnt exist")
         os.makedirs(saved_result_dir, 0)
     else:
         # Check whether this directory is empty in case it already exists
