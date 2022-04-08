@@ -35,16 +35,16 @@ if opt.result:
     else:
         # Check whether this directory is empty in case it already exists
         if os.listdir(saved_result_dir):
-            raise Exception("This directory already has datas in it")
+            raise Exception(f"{saved_result_dir} already has datas in it")
 
 num_row = 3  # Number of pixel rows in image representation
-num_col = 4  # Number of pixel columns in image representation
+num_col = 3  # Number of pixel columns in image representation
 # num_row x num_col ~= num_features?, feature pixels are tightly packed
 
 num = num_row * num_col  # Number of features to be included for analysis, which is also the total number of pixels in image representation
-save_image_size = 2  # Size of pictures (in inches) saved during the execution of IGTD algorithm.
+save_image_size = 5  # Size of pictures (in inches) saved during the execution of IGTD algorithm.
 max_step = 10000  # The maximum number of iterations to run the IGTD algorithm, if it does not converge. S_max
-val_step = 600  # The number of iterations for determining algorithm convergence. If the error reduction rate
+val_step = 200  # The number of iterations for determining algorithm convergence. If the error reduction rate
 # is smaller than a pre-set threshold for val_step itertions, the algorithm converges.  S_con
 
 # BATCH NORMALISATION: Import the example data and linearly scale each feature so that its minimum and maximum values are 0 and 1, respectively.
