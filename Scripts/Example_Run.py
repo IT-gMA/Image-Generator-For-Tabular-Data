@@ -89,3 +89,27 @@ result_dir = '{}Test_2'.format(saved_result_dir)
 os.makedirs(name=result_dir, exist_ok=True)
 table_to_image(norm_data, [num_row, num_col], fea_dist_method, image_dist_method, save_image_size,
                max_step, val_step, result_dir, error, axis=axis_type)
+
+# Run the IGTD algorithm using (1) the Euclidean correlation coefficient for calculating pairwise feature distances,
+# (2) the Manhattan distance for calculating pariwise pixel distances, and (3) the square function for evaluating
+# the difference between the feature distance ranking matrix and the pixel distance ranking matrix.
+# Save the result in Test_2 folder.
+fea_dist_method = 'Euclidean'  # Distance (or difference kinda) between features (smaller)
+image_dist_method = 'Manhattan'  # Difference between the matrices (containing features or pixels) (bigger)
+error = 'squared'
+result_dir = '{}Test_3'.format(saved_result_dir)
+os.makedirs(name=result_dir, exist_ok=True)
+table_to_image(norm_data, [num_row, num_col], fea_dist_method, image_dist_method, save_image_size,
+               max_step, val_step, result_dir, error, axis=axis_type)
+
+# Run the IGTD algorithm using (1) the set (binary) correlation coefficient for calculating pairwise feature distances,
+# (2) the Euclidean distance for calculating pariwise pixel distances, and (3) the square function for evaluating
+# the difference between the feature distance ranking matrix and the pixel distance ranking matrix.
+# Save the result in Test_2 folder.
+fea_dist_method = 'set'  # Distance (or difference kinda) between features (smaller)
+image_dist_method = 'Euclidean'  # Difference between the matrices (containing features or pixels) (bigger)
+error = 'squared'
+result_dir = '{}Test_4'.format(saved_result_dir)
+os.makedirs(name=result_dir, exist_ok=True)
+table_to_image(norm_data, [num_row, num_col], fea_dist_method, image_dist_method, save_image_size,
+               max_step, val_step, result_dir, error, axis=axis_type)
