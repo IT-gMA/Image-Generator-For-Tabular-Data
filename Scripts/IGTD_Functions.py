@@ -10,7 +10,6 @@ from scipy.spatial.distance import pdist, squareform
 import _pickle as cp
 
 
-
 def min_max_transform(data):
     '''
     This function does a linear transformation of each feature, so that the minimum and maximum values of a
@@ -22,17 +21,16 @@ def min_max_transform(data):
     norm_data: the data array after transformation      (normalisation?)
     '''
 
-    norm_data = np.empty(data.shape)        # Create an empy numpy array (for later copy into) the same size as the table
+    norm_data = np.empty(data.shape)  # Create an empy numpy array (for later copy into) the same size as the table
     norm_data.fill(np.nan)
-    for i in range(data.shape[1]):          # Iterate through all the features of the table i.e the 2nd dimension
-        v = data[:, i].copy()       # We be only care about the 2nd dimension here which contain each unique feature
+    for i in range(data.shape[1]):  # Iterate through all the features of the table i.e the 2nd dimension
+        v = data[:, i].copy()  # We be only care about the 2nd dimension here which contain each unique feature
         if np.max(v) == np.min(v):
             norm_data[:, i] = 0
         else:
-            v = (v - np.min(v)) / (np.max(v) - np.min(v))   # ... / the normalised range [minimum, maximum]
+            v = (v - np.min(v)) / (np.max(v) - np.min(v))  # ... / the normalised range [minimum, maximum]
             norm_data[:, i] = v
     return norm_data
-
 
 
 def generate_feature_distance_ranking(data, method='Pearson'):
@@ -77,7 +75,6 @@ def generate_feature_distance_ranking(data, method='Pearson'):
     return ranking, corr
 
 
-
 def generate_matrix_distance_ranking(num_r, num_c, method='Euclidean'):
     '''
     This function calculates the ranking of distances between all pairs of entries in a matrix of size num_r by num_c.
@@ -106,11 +103,11 @@ def generate_matrix_distance_ranking(num_r, num_c, method='Euclidean'):
     if method == 'Euclidean':
         for i in range(num):
             cord_dist[i, :] = np.sqrt(np.square(coordinate[i, 0] * np.ones(num) - coordinate[:, 0]) +
-                                     np.square(coordinate[i, 1] * np.ones(num) - coordinate[:, 1]))
+                                      np.square(coordinate[i, 1] * np.ones(num) - coordinate[:, 1]))
     elif method == 'Manhattan':
         for i in range(num):
             cord_dist[i, :] = np.abs(coordinate[i, 0] * np.ones(num) - coordinate[:, 0]) + \
-                             np.abs(coordinate[i, 1] * np.ones(num) - coordinate[:, 1])
+                              np.abs(coordinate[i, 1] * np.ones(num) - coordinate[:, 1])
 
     # generate the ranking based on distance
     tril_id = np.tril_indices(num, k=-1)
@@ -121,7 +118,6 @@ def generate_matrix_distance_ranking(num_r, num_c, method='Euclidean'):
 
     coordinate = np.int64(coordinate)
     return (coordinate[:, 0], coordinate[:, 1]), ranking
-
 
 
 def IGTD_absolute_error(source, target, max_step=1000, switch_t=0, val_step=50, min_gain=0.00001, random_state=1,
@@ -225,15 +221,17 @@ def IGTD_absolute_error(source, target, max_step=1000, switch_t=0, val_step=50, 
                                np.abs(source[j, k] - target[i, k]) + np.abs(source[i, k] - target[j, k])
                 elif k == i:
                     err_v[k] = np.sum(np.abs(source[j, :i] - target[i, :i])) + \
-                    np.sum(np.abs(source[(i + 1):j, j] - target[(i + 1):j, i])) + \
-                    np.sum(np.abs(source[(j + 1):, j] - target[(j + 1):, i])) + np.abs(source[i, j] - target[j, i])
+                               np.sum(np.abs(source[(i + 1):j, j] - target[(i + 1):j, i])) + \
+                               np.sum(np.abs(source[(j + 1):, j] - target[(j + 1):, i])) + np.abs(
+                        source[i, j] - target[j, i])
                 elif k < j:
                     err_v[k] = err_v[k] - np.abs(source[k, i] - target[k, i]) - np.abs(source[j, k] - target[j, k]) + \
                                np.abs(source[k, j] - target[k, i]) + np.abs(source[i, k] - target[j, k])
                 elif k == j:
                     err_v[k] = np.sum(np.abs(source[i, :i] - target[j, :i])) + \
-                    np.sum(np.abs(source[i, (i + 1):j] - target[j, (i + 1):j])) + \
-                    np.sum(np.abs(source[(j + 1):, i] - target[(j + 1):, j])) + np.abs(source[i, j] - target[j, i])
+                               np.sum(np.abs(source[i, (i + 1):j] - target[j, (i + 1):j])) + \
+                               np.sum(np.abs(source[(j + 1):, i] - target[(j + 1):, j])) + np.abs(
+                        source[i, j] - target[j, i])
                 else:
                     err_v[k] = err_v[k] - np.abs(source[k, i] - target[k, i]) - np.abs(source[k, j] - target[k, j]) + \
                                np.abs(source[k, j] - target[k, i]) + np.abs(source[k, i] - target[k, j])
@@ -279,16 +277,15 @@ def IGTD_absolute_error(source, target, max_step=1000, switch_t=0, val_step=50, 
     index_record = index_record[:len(err_record), :].astype(np.int)
     if save_folder is not None:
         pd.DataFrame(index_record).to_csv(save_folder + '/' + file_name + '_index.txt', header=False, index=False,
-            sep='\t', line_terminator='\r\n')
+                                          sep='\t', line_terminator='\r\n')
         pd.DataFrame(np.transpose(np.vstack((err_record, np.array(range(s + 2))))),
-            columns=['error', 'steps']).to_csv(save_folder + '/' + file_name + '_error_and_step.txt',
-            header=True, index=False, sep='\t', line_terminator='\r\n')
+                     columns=['error', 'steps']).to_csv(save_folder + '/' + file_name + '_error_and_step.txt',
+                                                        header=True, index=False, sep='\t', line_terminator='\r\n')
         pd.DataFrame(np.transpose(np.vstack((err_record, run_time))), columns=['error', 'run_time']).to_csv(
             save_folder + '/' + file_name + '_error_and_time.txt', header=True, index=False, sep='\t',
             line_terminator='\r\n')
 
     return index_record, err_record, run_time
-
 
 
 def IGTD_square_error(source, target, max_step=1000, switch_t=0, val_step=50, min_gain=0.00001, random_state=1,
@@ -317,7 +314,6 @@ def IGTD_square_error(source, target, max_step=1000, switch_t=0, val_step=50, mi
     err_record: the error history in the optimization process
     run_time: the time at which each step is finished in the optimization process
     '''
-
 
     np.random.RandomState(seed=random_state)
     if os.path.exists(save_folder):
@@ -367,10 +363,12 @@ def IGTD_square_error(source, target, max_step=1000, switch_t=0, val_step=50, mi
 
             err_i = np.sum(np.square(source[j, :i] - target[i, :i])) + \
                     np.sum(np.square(source[(i + 1):j, j] - target[(i + 1):j, i])) + \
-                    np.sum(np.square(source[(j + 1):, j] - target[(j + 1):, i])) + np.square(source[i, j] - target[j, i])
+                    np.sum(np.square(source[(j + 1):, j] - target[(j + 1):, i])) + np.square(
+                source[i, j] - target[j, i])
             err_j = np.sum(np.square(source[i, :i] - target[j, :i])) + \
                     np.sum(np.square(source[i, (i + 1):j] - target[j, (i + 1):j])) + \
-                    np.sum(np.square(source[(j + 1):, i] - target[(j + 1):, j])) + np.square(source[i, j] - target[j, i])
+                    np.sum(np.square(source[(j + 1):, i] - target[(j + 1):, j])) + np.square(
+                source[i, j] - target[j, i])
             err_test = err_i + err_j - np.square(source[i, j] - target[j, i])
 
             delta[jj] = err_test - err_ori
@@ -389,21 +387,26 @@ def IGTD_square_error(source, target, max_step=1000, switch_t=0, val_step=50, mi
                 j = ii
             for k in range(num):
                 if k < i:
-                    err_v[k] = err_v[k] - np.square(source[i, k] - target[i, k]) - np.square(source[j, k] - target[j, k]) + \
+                    err_v[k] = err_v[k] - np.square(source[i, k] - target[i, k]) - np.square(
+                        source[j, k] - target[j, k]) + \
                                np.square(source[j, k] - target[i, k]) + np.square(source[i, k] - target[j, k])
                 elif k == i:
                     err_v[k] = np.sum(np.square(source[j, :i] - target[i, :i])) + \
-                        np.sum(np.square(source[(i + 1):j, j] - target[(i + 1):j, i])) + \
-                        np.sum(np.square(source[(j + 1):, j] - target[(j + 1):, i])) + np.square(source[i, j] - target[j, i])
+                               np.sum(np.square(source[(i + 1):j, j] - target[(i + 1):j, i])) + \
+                               np.sum(np.square(source[(j + 1):, j] - target[(j + 1):, i])) + np.square(
+                        source[i, j] - target[j, i])
                 elif k < j:
-                    err_v[k] = err_v[k] - np.square(source[k, i] - target[k, i]) - np.square(source[j, k] - target[j, k]) + \
+                    err_v[k] = err_v[k] - np.square(source[k, i] - target[k, i]) - np.square(
+                        source[j, k] - target[j, k]) + \
                                np.square(source[k, j] - target[k, i]) + np.square(source[i, k] - target[j, k])
                 elif k == j:
                     err_v[k] = np.sum(np.square(source[i, :i] - target[j, :i])) + \
-                        np.sum(np.square(source[i, (i + 1):j] - target[j, (i + 1):j])) + \
-                        np.sum(np.square(source[(j + 1):, i] - target[(j + 1):, j])) + np.square(source[i, j] - target[j, i])
+                               np.sum(np.square(source[i, (i + 1):j] - target[j, (i + 1):j])) + \
+                               np.sum(np.square(source[(j + 1):, i] - target[(j + 1):, j])) + np.square(
+                        source[i, j] - target[j, i])
                 else:
-                    err_v[k] = err_v[k] - np.square(source[k, i] - target[k, i]) - np.square(source[k, j] - target[k, j]) + \
+                    err_v[k] = err_v[k] - np.square(source[k, i] - target[k, i]) - np.square(
+                        source[k, j] - target[k, j]) + \
                                np.square(source[k, j] - target[k, i]) + np.square(source[k, i] - target[k, j])
 
             # switch rows i and j
@@ -447,16 +450,15 @@ def IGTD_square_error(source, target, max_step=1000, switch_t=0, val_step=50, mi
     index_record = index_record[:len(err_record), :].astype(np.int)
     if save_folder is not None:
         pd.DataFrame(index_record).to_csv(save_folder + '/' + file_name + '_index.txt', header=False, index=False,
-            sep='\t', line_terminator='\r\n')
+                                          sep='\t', line_terminator='\r\n')
         pd.DataFrame(np.transpose(np.vstack((err_record, np.array(range(s + 2))))),
-            columns=['error', 'steps']).to_csv(save_folder + '/' + file_name + '_error_and_step.txt',
-            header=True, index=False, sep='\t', line_terminator='\r\n')
+                     columns=['error', 'steps']).to_csv(save_folder + '/' + file_name + '_error_and_step.txt',
+                                                        header=True, index=False, sep='\t', line_terminator='\r\n')
         pd.DataFrame(np.transpose(np.vstack((err_record, run_time))), columns=['error', 'run_time']).to_csv(
             save_folder + '/' + file_name + '_error_and_time.txt', header=True, index=False, sep='\t',
             line_terminator='\r\n')
 
     return index_record, err_record, run_time
-
 
 
 def IGTD(source, target, err_measure='abs', max_step=1000, switch_t=0, val_step=50, min_gain=0.00001, random_state=1,
@@ -467,18 +469,21 @@ def IGTD(source, target, err_measure='abs', max_step=1000, switch_t=0, val_step=
 
     if err_measure == 'abs':
         index_record, err_record, run_time = IGTD_absolute_error(source=source,
-            target=target, max_step=max_step, switch_t=switch_t, val_step=val_step, min_gain=min_gain,
-            random_state=random_state, save_folder=save_folder, file_name=file_name)
+                                                                 target=target, max_step=max_step, switch_t=switch_t,
+                                                                 val_step=val_step, min_gain=min_gain,
+                                                                 random_state=random_state, save_folder=save_folder,
+                                                                 file_name=file_name)
     if err_measure == 'squared':
         index_record, err_record, run_time = IGTD_square_error(source=source,
-            target=target, max_step=max_step, switch_t=switch_t, val_step=val_step, min_gain=min_gain,
-            random_state=random_state, save_folder=save_folder, file_name=file_name)
+                                                               target=target, max_step=max_step, switch_t=switch_t,
+                                                               val_step=val_step, min_gain=min_gain,
+                                                               random_state=random_state, save_folder=save_folder,
+                                                               file_name=file_name)
 
     return index_record, err_record, run_time
 
 
-
-def generate_image_data(data, index, num_row, num_column, coord, image_folder=None, file_name=''):
+def generate_image_data(data, index, num_row, num_column, coord, image_folder=None, file_name='', axis='scaled'):
     '''
     This function generates the data in image format according to rearrangement indices. It saves the data
     sample-by-sample in both txt files and image files
@@ -513,7 +518,7 @@ def generate_image_data(data, index, num_row, num_column, coord, image_folder=No
     data_2 = data_2[:, index]
     max_v = np.max(data_2)
     min_v = np.min(data_2)
-    data_2 = 255 - (data_2 - min_v) / (max_v - min_v) * 255 # So that black means high value
+    data_2 = 255 - (data_2 - min_v) / (max_v - min_v) * 255  # So that black means high value
 
     image_data = np.empty((num_row, num_column, data_2.shape[0]))
     image_data.fill(np.nan)
@@ -525,22 +530,27 @@ def generate_image_data(data, index, num_row, num_column, coord, image_folder=No
         if image_folder is not None:
             fig = plt.figure()
             plt.imshow(data_i, cmap='gray', vmin=0, vmax=255)
-            plt.axis('scaled')
+            '''parameters:
+                scaled: turn on axis
+                off: plot without axis
+            '''
+            plt.axis(axis)
             plt.savefig(fname=image_folder + '/' + file_name + '_' + samples[i] + '_image.png', bbox_inches='tight',
                         pad_inches=0)
             plt.close(fig)
 
             pd.DataFrame(image_data[:, :, i], index=None, columns=None).to_csv(image_folder + '/' + file_name + '_'
-                + samples[i] + '_data.txt', header=None, index=None, sep='\t', line_terminator='\r\n')
+                                                                               + samples[i] + '_data.txt', header=None,
+                                                                               index=None, sep='\t',
+                                                                               line_terminator='\r\n')
 
     return image_data, samples
 
 
-
 def table_to_image(norm_d, scale, fea_dist_method, image_dist_method, save_image_size, max_step, val_step, normDir,
-                   error, switch_t=0, min_gain=0.00001):
+                   error, switch_t=0, min_gain=0.00001, axis='scaled'):
     '''
-    This function converts tabular data into images using the IGTD algorithm. 
+    This function converts tabular data into images using the IGTD algorithm.
 
     Input:
     norm_d: a 2D array or data frame, which is the tabular data. Its size is n_samples by n_features
@@ -555,7 +565,7 @@ def table_to_image(norm_d, scale, fea_dist_method, image_dist_method, save_image
         It can be either 'Euclidean' or 'Manhattan'.
     save_image_size: size of images (in inches) for saving visual results.
     max_step: the maximum number of iterations that the IGTD algorithm will run if never converges.
-    val_step: the number of iterations for determining algorithm convergence. If the error reduction rate is smaller than 
+    val_step: the number of iterations for determining algorithm convergence. If the error reduction rate is smaller than
         min_gain for val_step iterations, the algorithm converges.
     normDir: a string indicating the directory to save result files.
     error: a string indicating the function to evaluate the DIFFERENCE between FEATURE DISTANCE RANKING AND
@@ -566,7 +576,7 @@ def table_to_image(norm_d, scale, fea_dist_method, image_dist_method, save_image
         divided by the error BEFORE feature swapping. If switch_t <= 0, the IGTD algorithm monotonically reduces
         the error during optimization.
     min_gain: if the error reduction rate is not larger than min_gain for val_step iterations, the algorithm converges.
-    
+
     Return:
     This function does not return any variable, but saves multiple result files, which are the following
     1.  Results.pkl stores the original tabular data, the generated image data, and the names of samples. The generated
@@ -604,8 +614,9 @@ def table_to_image(norm_d, scale, fea_dist_method, image_dist_method, save_image
     plt.close(fig)
 
     index, err, time = IGTD(source=ranking_feature, target=ranking_image,
-        err_measure=error, max_step=max_step, switch_t=switch_t, val_step=val_step, min_gain=min_gain, random_state=1,
-        save_folder=normDir + '/' + error, file_name='')
+                            err_measure=error, max_step=max_step, switch_t=switch_t, val_step=val_step,
+                            min_gain=min_gain, random_state=1,
+                            save_folder=normDir + '/' + error, file_name='')
 
     fig = plt.figure()
     plt.plot(time, err)
@@ -626,7 +637,7 @@ def table_to_image(norm_d, scale, fea_dist_method, image_dist_method, save_image
     plt.close(fig)
 
     data, samples = generate_image_data(data=norm_d, index=index[min_id, :], num_row=scale[0], num_column=scale[1],
-        coord=coordinate, image_folder=normDir + '/data', file_name='')
+                                        coord=coordinate, image_folder=normDir + '/data', file_name='', axis=axis)
 
     output = open(normDir + '/Results.pkl', 'wb')
     cp.dump(norm_d, output)

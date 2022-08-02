@@ -12,6 +12,8 @@ def parse_opt(known=False):
                         help='Tabular data files name (saved in ../Data/) to be converted to image')
     parser.add_argument('--result', type=str, default='Results',
                         help='Directory to save the recent runs')
+    parser.add_argument('--axis', type=str, default='scaled',
+                        help='plot generated images with or without axis')
 
     opt = parser.parse_known_args()[0] if known else parser.parse_args()
     return opt
@@ -37,8 +39,18 @@ if opt.result:
         if os.listdir(saved_result_dir):
             raise Exception(f"{saved_result_dir} already has datas in it")
 
-num_row = 3  # Number of pixel rows in image representation
-num_col = 3  # Number of pixel columns in image representation
+# Choose axis type for image plotting
+axis_type = 'scaled'
+if opt.axis:
+    if opt.axis == 'off':
+        axis_type = 'off'
+    elif opt.axis == 'scaled':
+        axis_type = 'scaled'
+    else:
+        raise Exception(f"Plotting axis type {opt.axis} is not valid, please choose from:\n1.scaled\n2.off")
+
+num_row = 30  # Number of pixel rows in image representation
+num_col = 30  # Number of pixel columns in image representation
 # num_row x num_col ~= num_features?, feature pixels are tightly packed
 
 num = num_row * num_col  # Number of features to be included for analysis, which is also the total number of pixels in image representation
@@ -64,7 +76,7 @@ error = 'abs'  # difference between the feature distance and pixel distance rank
 result_dir = '{}Test_1'.format(saved_result_dir)  # Where we save the computed difference (results)
 os.makedirs(name=result_dir, exist_ok=True)
 table_to_image(norm_data, [num_row, num_col], fea_dist_method, image_dist_method, save_image_size,
-               max_step, val_step, result_dir, error)  # Using the IGTD's function
+               max_step, val_step, result_dir, error, axis=axis_type)  # Using the IGTD's function
 
 # Run the IGTD algorithm using (1) the Pearson correlation coefficient for calculating pairwise feature distances,
 # (2) the Manhattan distance for calculating pariwise pixel distances, and (3) the square function for evaluating
@@ -76,4 +88,4 @@ error = 'squared'
 result_dir = '{}Test_2'.format(saved_result_dir)
 os.makedirs(name=result_dir, exist_ok=True)
 table_to_image(norm_data, [num_row, num_col], fea_dist_method, image_dist_method, save_image_size,
-               max_step, val_step, result_dir, error)
+               max_step, val_step, result_dir, error, axis=axis_type)
