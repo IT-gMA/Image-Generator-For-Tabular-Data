@@ -8,7 +8,8 @@ from scipy.stats import rankdata
 import time
 from scipy.spatial.distance import pdist, squareform
 import _pickle as cp
-from Example_Run import IMG_WIDTH, IMG_HEIGHT, MY_DPI
+
+MY_DPI = 192    # Specify your monitor's dpi
 
 
 def min_max_transform(data):
@@ -484,7 +485,7 @@ def IGTD(source, target, err_measure='abs', max_step=1000, switch_t=0, val_step=
     return index_record, err_record, run_time
 
 
-def generate_image_data(data, index, num_row, num_column, coord, image_folder=None, file_name='', axis='scaled'):
+def generate_image_data(data, index, num_row, num_column, coord, image_folder=None, file_name='', axis='scaled', width=None, height=None):
     '''
     This function generates the data in image format according to rearrangement indices. It saves the data
     sample-by-sample in both txt files and image files
@@ -529,7 +530,7 @@ def generate_image_data(data, index, num_row, num_column, coord, image_folder=No
         data_i[coord] = data_2[i, :]
         image_data[:, :, i] = data_i
         if image_folder is not None:
-            fig = plt.figure(figsize=(IMG_WIDTH/MY_DPI, IMG_HEIGHT/MY_DPI), dpi=MY_DPI)     # w = 30, h =30
+            fig = plt.figure(figsize=(width/MY_DPI, height/MY_DPI), dpi=MY_DPI)     # w = 30, h =30
             plt.imshow(data_i, cmap='gray', vmin=0, vmax=255)
             '''parameters:
                 scaled: turn on axis
@@ -641,7 +642,7 @@ def table_to_image(norm_d, scale, fea_dist_method, image_dist_method, save_image
         Exception("Image's dimension not specified")
 
     data, samples = generate_image_data(data=norm_d, index=index[min_id, :], num_row=scale[0], num_column=scale[1],
-                                        coord=coordinate, image_folder=normDir + '/data', file_name='', axis=axis)
+                                        coord=coordinate, image_folder=normDir + '/data', file_name='', axis=axis, width=width, height=height)
 
     output = open(normDir + '/Results.pkl', 'wb')
     cp.dump(norm_d, output)
