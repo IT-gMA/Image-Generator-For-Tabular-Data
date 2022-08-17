@@ -530,15 +530,18 @@ def generate_image_data(data, index, num_row, num_column, coord, image_folder=No
         data_i[coord] = data_2[i, :]
         image_data[:, :, i] = data_i
         if image_folder is not None:
-            fig = plt.figure(figsize=(width/MY_DPI, height/MY_DPI), dpi=MY_DPI)     # w = 30, h =30
+            #fig = plt.figure(figsize=(width/MY_DPI, height/MY_DPI), dpi=MY_DPI)     # w = 30, h =30
+            fig = plt.figure()
             plt.imshow(data_i, cmap='gray', vmin=0, vmax=255)
             '''parameters:
                 scaled: turn on axis
                 off: plot without axis
             '''
             plt.axis(axis)
+            #plt.savefig(fname=image_folder + '/' + file_name + '_' + samples[i] + '_image.png', bbox_inches='tight',
+            #            pad_inches=0, dpi=MY_DPI)
             plt.savefig(fname=image_folder + '/' + file_name + '_' + samples[i] + '_image.png', bbox_inches='tight',
-                        pad_inches=0, dpi=MY_DPI)
+                        pad_inches=0)
             plt.close(fig)
 
             pd.DataFrame(image_data[:, :, i], index=None, columns=None).to_csv(image_folder + '/' + file_name + '_'
