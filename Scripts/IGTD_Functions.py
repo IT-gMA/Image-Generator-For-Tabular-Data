@@ -9,6 +9,8 @@ import time
 from scipy.spatial.distance import pdist, squareform
 import _pickle as cp
 
+MY_DPI = 192    # Specify monitor's dpi here
+
 
 def min_max_transform(data):
     '''
@@ -483,7 +485,7 @@ def IGTD(source, target, err_measure='abs', max_step=1000, switch_t=0, val_step=
     return index_record, err_record, run_time
 
 
-def generate_image_data(data, index, num_row, num_column, coord, image_folder=None, file_name='', axis='scaled'):
+def generate_image_data(data, index, num_row, num_column, coord, image_folder=None, file_name='', axis='scaled', width=None, height=None):
     '''
     This function generates the data in image format according to rearrangement indices. It saves the data
     sample-by-sample in both txt files and image files
@@ -528,7 +530,7 @@ def generate_image_data(data, index, num_row, num_column, coord, image_folder=No
         data_i[coord] = data_2[i, :]
         image_data[:, :, i] = data_i
         if image_folder is not None:
-            fig = plt.figure()
+            fig = plt.figure(figsize=(width/MY_DPI, height/MY_DPI), dpi=MY_DPI)     # w = 30, h =30
             plt.imshow(data_i, cmap='gray', vmin=0, vmax=255)
             '''parameters:
                 scaled: turn on axis
@@ -536,7 +538,7 @@ def generate_image_data(data, index, num_row, num_column, coord, image_folder=No
             '''
             plt.axis(axis)
             plt.savefig(fname=image_folder + '/' + file_name + '_' + samples[i] + '_image.png', bbox_inches='tight',
-                        pad_inches=0)
+                        pad_inches=0, dpi=MY_DPI)
             plt.close(fig)
 
             pd.DataFrame(image_data[:, :, i], index=None, columns=None).to_csv(image_folder + '/' + file_name + '_'
@@ -548,7 +550,7 @@ def generate_image_data(data, index, num_row, num_column, coord, image_folder=No
 
 
 def table_to_image(norm_d, scale, fea_dist_method, image_dist_method, save_image_size, max_step, val_step, normDir,
-                   error, switch_t=0, min_gain=0.00001, axis='scaled'):
+                   error, switch_t=0, min_gain=0.00001, axis='scaled', width=None, height=None):
     '''
     This function converts tabular data into images using the IGTD algorithm.
 
@@ -635,6 +637,9 @@ def table_to_image(norm_d, scale, fea_dist_method, image_dist_method, save_image
                interpolation='nearest')
     plt.savefig(fname=normDir + '/optimized_feature_ranking.png', bbox_inches='tight', pad_inches=0)
     plt.close(fig)
+
+    if width is None or height == None:
+        Exception("Image's dimension not specified")
 
     data, samples = generate_image_data(data=norm_d, index=index[min_id, :], num_row=scale[0], num_column=scale[1],
                                         coord=coordinate, image_folder=normDir + '/data', file_name='', axis=axis)
