@@ -638,8 +638,8 @@ def table_to_image(norm_d, scale, fea_dist_method, image_dist_method, save_image
     plt.savefig(fname=normDir + '/optimized_feature_ranking.png', bbox_inches='tight', pad_inches=0)
     plt.close(fig)
 
-    if width is None or height == None:
-        Exception("Image's dimension not specified")
+    if width is None or height is None:
+        raise Exception("Image's dimension not specified")
 
     data, samples = generate_image_data(data=norm_d, index=index[min_id, :], num_row=scale[0], num_column=scale[1],
                                         coord=coordinate, image_folder=normDir + '/data', file_name='', axis=axis, width=width, height=height)
