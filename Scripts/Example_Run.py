@@ -49,14 +49,14 @@ if opt.axis:
     else:
         raise Exception(f"Plotting axis type {opt.axis} is not valid, please choose from:\n1.scaled\n2.off")
 
-num_row = 30  # Number of pixel rows in image representation
-num_col = 30  # Number of pixel columns in image representation
+num_row = 24  # Number of pixel rows in image representation
+num_col = 24  # Number of pixel columns in image representation
 # num_row x num_col ~= num_features?, feature pixels are tightly packed
 
 num = num_row * num_col  # Number of features to be included for analysis, which is also the total number of pixels in image representation
 save_image_size = 5  # Size of pictures (in inches) saved during the execution of IGTD algorithm.
-max_step = 10000  # The maximum number of iterations to run the IGTD algorithm, if it does not converge. S_max
-val_step = 200  # The number of iterations for determining algorithm convergence. If the error reduction rate
+max_step = 80000  # The maximum number of iterations to run the IGTD algorithm, if it does not converge. S_max
+val_step = 900  # The number of iterations for determining algorithm convergence. If the error reduction rate
 # is smaller than a pre-set threshold for val_step itertions, the algorithm converges.  S_con
 
 # BATCH NORMALISATION: Import the example data and linearly scale each feature so that its minimum and maximum values are 0 and 1, respectively.

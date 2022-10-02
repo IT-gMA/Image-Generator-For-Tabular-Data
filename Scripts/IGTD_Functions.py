@@ -541,10 +541,11 @@ def generate_image_data(data, index, num_row, num_column, coord, image_folder=No
             plt.axis(axis)
             #plt.savefig(fname=image_folder + '/' + file_name + '_' + samples[i] + '_image.png', bbox_inches='tight',
             #            pad_inches=0, dpi=MY_DPI)
-            #plt.savefig(fname=image_folder + '/' + file_name + '_' + samples[i] + '_image.png', bbox_inches='tight',
-            #            pad_inches=0)
+            plt.savefig(fname=image_folder + '/' + file_name + '_' + samples[i] + '_image.png', bbox_inches='tight',
+                        pad_inches=0)
 
-            cv2.imwrite(filename=image_folder + '/' + file_name + '_' + samples[i] + '_image.png', img=data_i)
+            #data_i = cv2.flip(data_i, 1)
+            #cv2.imwrite(filename=image_folder + '/' + file_name + '_' + samples[i] + '_image.png', img=data_i)
             plt.close(fig)
 
             pd.DataFrame(image_data[:, :, i], index=None, columns=None).to_csv(image_folder + '/' + file_name + '_'
