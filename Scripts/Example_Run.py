@@ -49,8 +49,8 @@ if opt.axis:
     else:
         raise Exception(f"Plotting axis type {opt.axis} is not valid, please choose from:\n1.scaled\n2.off")
 
-num_row = 24  # Number of pixel rows in image representation
-num_col = 24  # Number of pixel columns in image representation
+num_row = 30  # Number of pixel rows in image representation
+num_col = 30  # Number of pixel columns in image representation
 # num_row x num_col ~= num_features?, feature pixels are tightly packed
 
 num = num_row * num_col  # Number of features to be included for analysis, which is also the total number of pixels in image representation

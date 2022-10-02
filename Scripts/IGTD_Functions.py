@@ -10,7 +10,7 @@ from scipy.spatial.distance import pdist, squareform
 import _pickle as cp
 import cv2
 
-MY_DPI = 192    # Specify your monitor's dpi
+MY_DPI = 192    # Specify your monitor's dpi, not the same for every monitor
 
 
 def min_max_transform(data):
