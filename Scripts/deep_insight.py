@@ -13,15 +13,15 @@ import seaborn as sns
 import cv2
 import matplotlib.pyplot as plt
 
-NUM_ROW = 40
-NUM_COLUMN = 40
-SAVE_IMG_PATH = '../DI_bleve_40x40'
-SAVE_LOG_PATH = '../DI_bleve_40x40/run_logs'
+NUM_ROW = 3
+NUM_COLUMN = 4
+SAVE_IMG_PATH = '../DI_bleve_og'
+SAVE_LOG_PATH = '../DI_bleve_og/run_logs'
 
 
 from IGTD_Functions import min_max_transform, table_to_image
 
-tab_data_path = '../Data/new_data_40.txt'
+tab_data_path = '../Data/original_data.txt'
 data = pd.read_csv(tab_data_path, low_memory=False, sep='\t',
                    header=0, index_col=0)
 num = NUM_ROW*NUM_COLUMN
